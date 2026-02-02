@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { getCenters } from "../../../api/directory.api";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function CentersScreen() {
   const router = useRouter();
+  const { user } = useAuth();
   const { data: centers, isLoading } = useQuery({
-    queryKey: ["centers"],
-    queryFn: getCenters,
+    queryKey: ["centers", user?.location],
+    queryFn: () => getCenters(user?.location),
   });
 
   if (isLoading) {

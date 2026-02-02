@@ -1,5 +1,10 @@
+import {
+  ForgotPasswordRequest,
+  LoginRequest,
+  ParentProfile,
+  RegisterRequest,
+} from "../types/auth.types";
 import instance from "./axios";
-import { LoginRequest, RegisterRequest, ForgotPasswordRequest } from "../types/auth.types";
 
 export const login = async (data: LoginRequest) => {
   const response = await instance.post("/auth/login", data);
@@ -18,4 +23,17 @@ export const forgotPassword = async (data: ForgotPasswordRequest) => {
 
 export const logout = async () => {
   await instance.post("/auth/logout");
+};
+
+// Parent Profile API
+export const getParentProfile = async (): Promise<ParentProfile> => {
+  const response = await instance.get("/auth/profile");
+  return response.data;
+};
+
+export const updateParentProfile = async (
+  data: ParentProfile
+): Promise<ParentProfile> => {
+  const response = await instance.put("/auth/profile", data);
+  return response.data;
 };

@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { getProfessionals } from "../../../api/directory.api";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function ProfessionalsScreen() {
   const router = useRouter();
+  const { user } = useAuth();
   const { data: professionals, isLoading } = useQuery({
-    queryKey: ["professionals"],
-    queryFn: getProfessionals,
+    queryKey: ["professionals", user?.location],
+    queryFn: () => getProfessionals(user?.location),
   });
 
   if (isLoading) {
